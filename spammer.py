@@ -46,10 +46,10 @@ import re
 from email.mime.text import MIMEText
 from email import charset
 from time import sleep
-from xlrd import open_workbook,cellname,xlsx
+from xlrd import open_workbook,xlsx
 
 smtp_server   = 'mailserver.example.com'
-lessom_prefix = 'cs'
+lesson_prefix = 'cs'
 
 ##
 # Ask a yes/no question via input() and return the user's answer.
@@ -126,6 +126,11 @@ def parse_assigment_column(assignment_column, email_column, sheet_columns):
     else:
         raise Exception('Failed to parse assignment-columns'
                         ' (%s)' % assignment_column)
+
+    if start < end :
+        raise Exception('In ranges (:) the first column must be smaller than'
+                        ' the second (in alphabetical order). The offending'
+                        ' argument is \"%s\"' % assignment_column)
 
     return [range(start, end+1)]
 
