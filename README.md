@@ -41,12 +41,12 @@ optional arguments:
 
 Assume a `test.xls` file with the following contents:
 
-|  | A       | B            | C    | D                 | E              | F              | D              |
-|:-|:--------|:-------------|:-----|:------------------|:---------------|:---------------|:---------------|
-|1 | *Name*  | *Surname*    | *ID* | *e-mail*          | *Assignment 1* | *Assignment 2* | *Assignment 3* |
-|2 | John    | Smith        | 1600 | john@example.com  | 4              | 8              | 9              |
-|3 | Μιράντα | Παπαδοπούλου |  524 | mpapa@example.com | 6              | 7.5            | 9.9            |
-|4 | Foivos  | Zakkak       |  642 | foivos@zakkak.net | 3.5            | 4              | 6              |
+|   | A       | B            | C    | D                 | E              | F              | D              |
+|:- |:------- |:------------ |:---- |:----------------- |:-------------- |:-------------- |:-------------- |
+|1  | *Name*  | *Surname*    | *ID* | *e-mail*          | *Assignment 1* | *Assignment 2* | *Assignment 3* |
+|2  | John    | Smith        | 1600 | john@example.com  | 4              | 8              | 9              |
+|3  | Μιράντα | Παπαδοπούλου |  524 | mpapa@example.com | 6              | 7.5            | 9.9            |
+|4  | Foivos  | Zakkak       |  642 | foivos@zakkak.net | 3.5            | 4              | 6              |
 
 To send the grades for assignments 1 and 2 you can run:
 
