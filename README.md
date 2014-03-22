@@ -3,6 +3,13 @@
 A python script parsing excel files with student grades and sending
 out the grades with personal e-mails
 
+## Dependencies
+
+1. python3
+2. python3-xlrd
+
+## Usage
+
 ```
 usage: spammer.py [-h] [-s SHEET] -H HEADER_ROW -e EMAIL_COLUMN -l LESSON
                   [-c ASSIGNMENT_COLUMNS] [-D] [-f] [-v] [-V]
