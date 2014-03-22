@@ -37,7 +37,7 @@ optional arguments:
   -V, --version         show program's version number and exit
 ```
 
-## Example
+## Examples
 
 Assume a `test.xls` file with the following contents:
 
@@ -51,5 +51,19 @@ Assume a `test.xls` file with the following contents:
 To send the grades for assignments 1 and 2 you can run:
 
 ```
-spammer.py test.xls -H 1 -e D -l 255
+spammer.py test.xls -H 1 -e D -l 255 -c E:F
+```
+
+or
+
+```
+spammer.py test.xls -H 1 -e D -l 255 -c :F
+```
+
+in the second case the script will print all columns after the one containig the e-mail until column F.
+
+To send the grades for assignments 1 and 3 you can run:
+
+```
+spammer.py test.xls -H 1 -e D -l 255 -c E,D
 ```
