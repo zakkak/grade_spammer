@@ -185,7 +185,7 @@ def flatten(l):
 ################################################################################
 # Define the arguments
 ################################################################################
-parser = argparse.ArgumentParser(prog="Spammer", description='The Spammer!!!')
+parser = argparse.ArgumentParser(prog="spammer.py", description='The Spammer!!!')
 parser.add_argument('spreadsheet',
                     type=str)
 parser.add_argument('-s','--sheet',
@@ -227,7 +227,7 @@ parser.add_argument('-v','--verbose',
                     help='run in verbose mode (default: False)')
 parser.add_argument('-V', '--version',
                     action='version',
-                    version='%(prog)s v0.9')
+                    version='Spammer v0.9')
 
 args = parser.parse_args()
 
