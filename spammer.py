@@ -50,6 +50,7 @@ from xlrd import open_workbook,xlsx
 
 smtp_server   = 'mailserver.example.com'
 lesson_prefix = 'cs'
+email_suffix = '@example.com'
 
 ##
 # Ask a yes/no question via input() and return the user's answer.
@@ -266,7 +267,7 @@ assignments = list(flatten(assignments))
 if args.verbose:
     print('Will send grades for: ', assignments)
 
-sender      = lesson_prefix.lower() + str(args.lesson) + '@example.com'
+sender      = lesson_prefix.lower() + str(args.lesson) + email_suffix
 subject     = lesson_prefix.upper() + '-' + str(args.lesson) + ' Βαθμολογίες ( '
 # add info about which assignments' grades are sent
 for col in assignments:
