@@ -50,7 +50,7 @@ from xlrd import open_workbook,xlsx
 
 smtp_server   = 'mailserver.example.com'
 lesson_prefix = 'cs'
-email_suffix = '@example.com'
+email_suffix  = '@example.com'
 
 ##
 # Ask a yes/no question via input() and return the user's answer.
@@ -128,7 +128,7 @@ def parse_assigment_column(assignment_column, email_column, sheet_columns):
         raise Exception('Failed to parse assignment-columns'
                         ' (%s)' % assignment_column)
 
-    if start < end :
+    if start >= end :
         raise Exception('In ranges (:) the first column must be smaller than'
                         ' the second (in alphabetical order). The offending'
                         ' argument is \"%s\"' % assignment_column)
@@ -240,7 +240,7 @@ args = parser.parse_args()
 if args.verbose:
     print('Args = ' + str(args))
 
-zero,email_column = xlsx.cell_name_to_rowx_colx(args.email_column+'1')
+zero,email_column = xlsx.cell_name_to_rowx_colx(args.email_column.upper()+'1')
 assert(zero == 0)
 
 if args.assignment_columns is None:
@@ -301,12 +301,28 @@ for row in range(header_row + 1, sheet.nrows):
 
     if args.verbose:
         print('Sending to: ',to)
-#        print(msg.as_string())
+        print(text)
 
     if not args.dry:
-        s = smtplib.SMTP(smtp_server)
-        s.sendmail(sender, [to], msg.as_string())
-        s.quit()
+        # Try sending the e-mail
+        while True:
+            try:
+                s = smtplib.SMTP(smtp_server)
+                s.sendmail(sender, [to], msg.as_string())
+                s.quit()
+                break
+            except smtplib.SMTPRecipientsRefused as s:
+                # if it fails ask for a valid e-mail address
+                print('Sending to ', list(s.recipients)[0], ' failed!')
+                new_to = input('Please give a new e-mail address for this entry\nor type \'ignore\' (without the quotes) to skip this entry:\n')
+                if is_valid_email(new_to):
+                    # if it is a valid e-mail address update the
+                    # corresponding fields and retry
+                    msg['To'] = new_to
+                    to        = new_to
+                elif new_to == 'ignore':
+                    # if the user wants to ignore this entry
+                    break
         # wait a sec before sending the next e-mail (to avoid
         # overloading the mail server)
         sleep(1)
