@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+# -*- mode: python-3; coding: utf-8; -*-
 
 ##########################################################################
 #                                                                        #
 # The MIT License (MIT)                                                  #
 #                                                                        #
-# Copyright (c) 2014 Foivos S. Zakkak <foivos@zakkak.net>                #
+# Copyright (c) 2014-2015 Foivos S. Zakkak <foivos@zakkak.net>           #
 #                                                                        #
 # Permission is hereby granted, free of charge, to any person            #
 # obtaining a copy of this software and associated documentation files   #
@@ -32,7 +33,7 @@
 # @author Foivos S. Zakkak <foivos@zakkak.net>
 #
 # This python script parses excel files and sends an e-mail with the
-# grades to each student.  The scripts excepts to find one student per
+# grades to each student.  The script excepts to find one student per
 # row.
 #
 # TODOs:
@@ -49,8 +50,8 @@ from time import sleep
 from xlrd import open_workbook,xlsx
 
 smtp_server   = 'mailserver.example.com'
-lesson_prefix = 'cs'
-email_suffix  = '@example.com'
+course_prefix = 'cs'
+from_addr     = 'csXXX@example.com'
 
 ##
 # Ask a yes/no question via input() and return the user's answer.
@@ -209,10 +210,10 @@ parser.add_argument('-e','--email-column',
                     type=str,
                     required=True,
                     help='choose the column containing the students\' e-mails.')
-parser.add_argument('-l','--lesson',
+parser.add_argument('-i','--course-id',
                     type=int,
                     required=True,
-                    help='the lesson number (i.e. 255).')
+                    help='the course id (i.e. 255).')
 parser.add_argument('-c','--assignment-columns',
                     type=str,
                     help='choose the columns containing the assignments\' grades.'
@@ -233,7 +234,7 @@ parser.add_argument('-v','--verbose',
                     help='run in verbose mode (default: False)')
 parser.add_argument('-V', '--version',
                     action='version',
-                    version='Spammer v0.9')
+                    version='Spammer v0.10')
 
 args = parser.parse_args()
 
@@ -267,8 +268,7 @@ assignments = list(flatten(assignments))
 if args.verbose:
     print('Will send grades for: ', assignments)
 
-sender      = lesson_prefix.lower() + str(args.lesson) + email_suffix
-subject     = lesson_prefix.upper() + '-' + str(args.lesson) + ' Βαθμολογίες ( '
+subject     = course_prefix.upper() + '-' + str(args.course_id) + ' Βαθμολογίες ( '
 # add info about which assignments' grades are sent
 for col in assignments:
     subject = subject + str(sheet.cell(header_row, col).value) + ' '
@@ -283,6 +283,9 @@ if args.verbose:
 for row in range(header_row + 1, sheet.nrows):
     to = sheet.cell(row, email_column).value
 
+    if args.verbose:
+        print('Sending to: ',to)
+
     if not is_valid_email(to):
         raise Exception('\"' + to  + '\" is not a valid e-mail address')
 
@@ -296,11 +299,10 @@ for row in range(header_row + 1, sheet.nrows):
 
     msg = MIMEText(text, _charset='utf-8')
     msg['Subject'] = subject
-    msg['From']    = sender
+    msg['From']    = from_addr
     msg['To']      = to
 
     if args.verbose:
-        print('Sending to: ',to)
         print(text)
 
     if not args.dry:
@@ -308,7 +310,7 @@ for row in range(header_row + 1, sheet.nrows):
         while True:
             try:
                 s = smtplib.SMTP(smtp_server)
-                s.sendmail(sender, [to], msg.as_string())
+                s.sendmail(from_addr, [to], msg.as_string())
                 s.quit()
                 break
             except smtplib.SMTPRecipientsRefused as s:
